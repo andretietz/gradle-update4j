@@ -11,10 +11,11 @@ class Update4jPlugin : Plugin<Project> {
             project
         )
 
-        project.tasks.create("generateConfiguration", Update4jXmlGenerator::class.java).run {
-            // Set description and group for the task
-            description = "Generates the configuration file"
-            group = "Update4J"
-        }
+        project.tasks.create("generateConfiguration", Update4jXmlGenerator::class.java)
+            .run {
+                // Set description and group for the task
+                description = "Generates the configuration file"
+                group = "Update4J"
+            }
     }
 }

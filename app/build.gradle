@@ -1,6 +1,6 @@
 plugins {
     id 'kotlin'
-    id 'gradle-update4j'
+    id 'com.andretietz.gradle.update4j'
 }
 
 group 'com.andretietz'
@@ -11,7 +11,10 @@ sourceCompatibility = 1.8
 dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     api "org.slf4j:slf4j-api:$slf4jVersion"
-//    testImplementation "junit:junit:$junitVersion"
+    implementation "com.jcraft:jsch:0.1.55"
+    implementation project(':locallib')
+    // logging
+    implementation 'org.apache.logging.log4j:log4j:2.13.0'
 }
 
 compileKotlin {
@@ -22,5 +25,5 @@ compileTestKotlin {
 }
 
 update4j {
-
+//    output = "tgis == akshdk"
 }

@@ -20,7 +20,7 @@ dependencies {
 gradlePlugin {
     plugins {
         create("gradle-update4j") {
-            id = "gradle-update4j"
+            id = "com.andretietz.gradle.update4j"
             implementationClass = "com.andretietz.gradle.update4j.Update4jPlugin"
         }
     }

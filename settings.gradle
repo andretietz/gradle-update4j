@@ -1,4 +1,5 @@
 include ':app'
+include ':locallib'
 include ':update4j'
 rootProject.name = 'gradle-update4j'
 

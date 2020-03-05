@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata modelVersion="1.1.0">
-  <groupId>gradle-update4j</groupId>
-  <artifactId>gradle-update4j.gradle.plugin</artifactId>
+  <groupId>com.andretietz.gradle.update4j</groupId>
+  <artifactId>com.andretietz.gradle.update4j.gradle.plugin</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <versioning>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
-    <lastUpdated>20200305110817</lastUpdated>
+    <lastUpdated>20200305141447</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>pom</extension>
         <value>1.0.0-SNAPSHOT</value>
-        <updated>20200305110817</updated>
+        <updated>20200305141447</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
