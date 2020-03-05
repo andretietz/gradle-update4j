@@ -1,0 +1,4 @@
+include ':app'
+include ':update4j'
+rootProject.name = 'gradle-update4j'
+

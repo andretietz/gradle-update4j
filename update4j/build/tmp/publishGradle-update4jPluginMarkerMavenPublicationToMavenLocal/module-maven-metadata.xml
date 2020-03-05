@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>gradle-update4j</groupId>
+  <artifactId>gradle-update4j.gradle.plugin</artifactId>
+  <versioning>
+    <latest>1.0.0-SNAPSHOT</latest>
+    <versions>
+      <version>1.0.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20200305110817</lastUpdated>
+  </versioning>
+</metadata>

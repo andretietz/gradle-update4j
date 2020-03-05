@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ab87a643-f9e0-4454-a3b5-8e18b5788063" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/update4j">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="update4j" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="update4j" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="update4j" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="gradle-update4j" type="f1a62948:ProjectNode" />
+                <item name="update4j" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="publishing" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Yf0QjE8XLJqR9K13DFhNGYX5wu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="not.eligible.for.single.variant.sync" value="true" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.13693899" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+  </component>
+  <component name="RunManager" selected="Gradle.gradle-update4j:app [generateConfiguration]">
+    <configuration name="Update4jPluginTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;com.andretietz.gradle.update4j.Update4jPluginTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":plugin:cleanTest" />
+            <option value=":plugin:test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="gradle-update4j [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="gradle-update4j:app [generateConfiguration]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="generateConfiguration" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="gradle-update4j:app [generateXml]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="generateXml" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="gradle-update4j:update4j [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/update4j" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="gradle-update4j" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <module name="gradle-update4j" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TORNADOFX_RUNCONFIGURATION" factoryName="TornadoFX Configuration Factory" run-type="App" live-views="false" live-stylesheets="false" dump-stylesheets="false">
+      <module name="gradle-update4j" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.gradle-update4j:app [generateConfiguration]" />
+        <item itemvalue="Gradle.gradle-update4j:app [generateXml]" />
+        <item itemvalue="Gradle.gradle-update4j [build]" />
+        <item itemvalue="Gradle.gradle-update4j:update4j [publishToMavenLocal]" />
+        <item itemvalue="Gradle.Update4jPluginTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="535" y="164" key="#Application" timestamp="1583319069594">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="535" y="164" key="#Application/0.23.1680.947@0.23.1680.947" timestamp="1583319069594" />
+    <state x="622" y="219" key="#com.intellij.ide.util.MemberChooser" timestamp="1583401446761">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="622" y="219" key="#com.intellij.ide.util.MemberChooser/0.23.1680.947@0.23.1680.947" timestamp="1583401446761" />
+    <state x="577" y="287" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1583319068302">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="577" y="287" key="#com.intellij.ide.util.TreeClassChooserDialog/0.23.1680.947@0.23.1680.947" timestamp="1583319068302" />
+    <state width="1638" height="253" key="GridCell.Tab.0.bottom" timestamp="1583406577426">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="253" key="GridCell.Tab.0.bottom/0.23.1680.947@0.23.1680.947" timestamp="1583406577426" />
+    <state width="1638" height="253" key="GridCell.Tab.0.center" timestamp="1583406577424">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="253" key="GridCell.Tab.0.center/0.23.1680.947@0.23.1680.947" timestamp="1583406577424" />
+    <state width="1638" height="253" key="GridCell.Tab.0.left" timestamp="1583406577424">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="253" key="GridCell.Tab.0.left/0.23.1680.947@0.23.1680.947" timestamp="1583406577424" />
+    <state width="1638" height="253" key="GridCell.Tab.0.right" timestamp="1583406577425">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="253" key="GridCell.Tab.0.right/0.23.1680.947@0.23.1680.947" timestamp="1583406577425" />
+    <state width="1638" height="313" key="GridCell.Tab.1.bottom" timestamp="1583330650934">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="313" key="GridCell.Tab.1.bottom/0.23.1680.947@0.23.1680.947" timestamp="1583330650934" />
+    <state width="1638" height="313" key="GridCell.Tab.1.center" timestamp="1583330650934">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="313" key="GridCell.Tab.1.center/0.23.1680.947@0.23.1680.947" timestamp="1583330650934" />
+    <state width="1638" height="313" key="GridCell.Tab.1.left" timestamp="1583330650934">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="313" key="GridCell.Tab.1.left/0.23.1680.947@0.23.1680.947" timestamp="1583330650934" />
+    <state width="1638" height="313" key="GridCell.Tab.1.right" timestamp="1583330650934">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="1638" height="313" key="GridCell.Tab.1.right/0.23.1680.947@0.23.1680.947" timestamp="1583330650934" />
+    <state x="135" y="133" width="1545" height="837" key="SettingsEditor" timestamp="1583403443779">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="135" y="133" width="1545" height="837" key="SettingsEditor/0.23.1680.947@0.23.1680.947" timestamp="1583403443779" />
+    <state width="600" height="424" key="javadoc.popup" timestamp="1583402253213">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state width="600" height="424" key="javadoc.popup/0.23.1680.947@0.23.1680.947" timestamp="1583402253213" />
+    <state x="217" y="110" key="new project wizard" timestamp="1583319636133">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="217" y="110" key="new project wizard/0.23.1680.947@0.23.1680.947" timestamp="1583319636133" />
+    <state x="586" y="230" key="org.jetbrains.kotlin.idea.testIntegration.KotlinCreateTestDialog" timestamp="1583402044977">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="586" y="230" key="org.jetbrains.kotlin.idea.testIntegration.KotlinCreateTestDialog/0.23.1680.947@0.23.1680.947" timestamp="1583402044977" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/update4j/src/main/kotlin/com/andretietz/gradle/update4j/ConfigCreator.kt</url>
+          <line>16</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

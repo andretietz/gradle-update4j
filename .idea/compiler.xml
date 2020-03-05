@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="gradle-update4j.plugin.main" target="1.8" />
+      <module name="gradle-update4j.plugin.test" target="1.8" />
+      <module name="gradle-update4j.updater.main" target="1.8" />
+      <module name="gradle-update4j.updater.test" target="1.8" />
+      <module name="UpdateTrial.app.main" target="1.8" />
+      <module name="UpdateTrial.app.test" target="1.8" />
+      <module name="UpdateTrial.main" target="1.8" />
+      <module name="UpdateTrial.test" target="1.8" />
+      <module name="UpdateTrial.updater.main" target="1.8" />
+      <module name="UpdateTrial.updater.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

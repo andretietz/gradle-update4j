@@ -1,0 +1,111 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.andretietz.gradle",
+    "module": "update4j",
+    "version": "1.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.2.2",
+      "buildId": "p3vpqmmq3bgv7ay57au4x5sqsi"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.localToProject": "public",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.3.61"
+          }
+        },
+        {
+          "group": "org.update4j",
+          "module": "update4j",
+          "version": {
+            "requires": "1.4.5"
+          }
+        },
+        {
+          "group": "org.simpleframework",
+          "module": "simple-xml",
+          "version": {
+            "requires": "2.7.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "update4j-1.0.0-SNAPSHOT.jar",
+          "url": "update4j-1.0.0-SNAPSHOT.jar",
+          "size": 7086,
+          "sha512": "b1e7c657636b6e621a65e08fd832891bd1584a9078e58a34ae09326f1b6ac43a99138c73e34f76e7588ca045f9ecb60ccb14ca6d70a15480c7b0a0ed91d1fa62",
+          "sha256": "7a97b0e95c549142c440a4b5eac0a643b0baa1c6bb08bbd5ea69c4c4ee7b2efb",
+          "sha1": "10f8450922071f0c408cdc802947f105216823a4",
+          "md5": "af9eeb9ad5c48740f5b955b1ab990c91"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.localToProject": "public",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.3.61"
+          }
+        },
+        {
+          "group": "org.update4j",
+          "module": "update4j",
+          "version": {
+            "requires": "1.4.5"
+          }
+        },
+        {
+          "group": "org.simpleframework",
+          "module": "simple-xml",
+          "version": {
+            "requires": "2.7.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "update4j-1.0.0-SNAPSHOT.jar",
+          "url": "update4j-1.0.0-SNAPSHOT.jar",
+          "size": 7086,
+          "sha512": "b1e7c657636b6e621a65e08fd832891bd1584a9078e58a34ae09326f1b6ac43a99138c73e34f76e7588ca045f9ecb60ccb14ca6d70a15480c7b0a0ed91d1fa62",
+          "sha256": "7a97b0e95c549142c440a4b5eac0a643b0baa1c6bb08bbd5ea69c4c4ee7b2efb",
+          "sha1": "10f8450922071f0c408cdc802947f105216823a4",
+          "md5": "af9eeb9ad5c48740f5b955b1ab990c91"
+        }
+      ]
+    }
+  ]
+}
