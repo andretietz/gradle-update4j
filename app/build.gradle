@@ -10,6 +10,7 @@ sourceCompatibility = 1.8
 
 dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    api "org.jetbrains.kotlin:kotlin-reflect"
     api "org.slf4j:slf4j-api:$slf4jVersion"
     api "org.update4j:update4j:1.4.5"
     implementation "com.jcraft:jsch:0.1.55"
@@ -20,8 +21,8 @@ dependencies {
 
 jar {
     manifest {
+        attributes 'Class-Path': configurations.getByName("default").collect { "lib/"+it.name }.join(' ')
         attributes 'Main-Class': 'com.andretietz.updater.Bootstrap'
-        attributes 'Class-Path': './lib/*'
     }
 }
 

@@ -52,6 +52,7 @@ open class Update4jXmlGenerator : DefaultTask() {
             .baseUri(remoteLocation)
             .basePath("\${app.dir}")
 
+        // TODO: this is super ugly and hacky!!!!!
         project.allprojects.forEach {
             val file = File("$bundleLocation/${project.name}-${project.version}.jar")
             if (!file.exists()) {
@@ -72,10 +73,11 @@ open class Update4jXmlGenerator : DefaultTask() {
                 )
 
         }
-        project.allprojects
-            .flatMap { it.configurations }
-            .firstOrNull { it.name == "default" }
-            ?.mapNotNull { dependency ->
+        project.configurations.getByName("default")
+//        project.allprojects
+//            .flatMap { it.configurations }
+//            .firstOrNull { it.name == "default" }
+            .mapNotNull { dependency ->
                 val targetFile = File("$bundleLocation/$libfolder/${dependency.name}")
 
                 val file = if (!targetFile.exists()) {
@@ -83,9 +85,8 @@ open class Update4jXmlGenerator : DefaultTask() {
                 } else {
                     targetFile
                 }
-                println("File \"$file\" exists: ${file.exists()}")
                 file
-            }?.let { list ->
+            }.let { list ->
                 configurationBuilder.properties(
                     listOf(
                         Property("app.name", appName),
@@ -97,6 +98,8 @@ open class Update4jXmlGenerator : DefaultTask() {
                 )
                     .launcher(launcher)
                 list.forEach { file ->
+                    // TODO: add to manifest classpath
+//                    print("lib/"+file.name)
                     try {
                         configurationBuilder
                             .file(

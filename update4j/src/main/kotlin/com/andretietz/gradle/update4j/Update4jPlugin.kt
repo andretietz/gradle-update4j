@@ -2,6 +2,7 @@ package com.andretietz.gradle.update4j
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import java.io.File
 
 class Update4jPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -16,14 +17,16 @@ class Update4jPlugin : Plugin<Project> {
             .run {
                 // Set description and group for the task
                 description = "Generates the configuration file"
-                group = "Update4J"
+                group = "update4J"
             }
 
-        // TODO
-        project.tasks.getByName("clean").dependsOn(
-            project.tasks.create("clean-gradle-update4j") {
+        val cleaningTask = project.tasks.create("clean-update4j") {
+            File(project.rootDir, "build").delete()
+        }.run {
+            description = "Deletes the build folder"
+            group = "update4J"
+        }
 
-            }
-        )
+//        project.tasks.getByName("clean").dependsOn(cleaningTask)
     }
 }
