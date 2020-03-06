@@ -12,10 +12,18 @@ class Update4jPlugin : Plugin<Project> {
         )
 
         project.tasks.create("generateConfiguration", Update4jXmlGenerator::class.java)
+            .dependsOn("build")
             .run {
                 // Set description and group for the task
                 description = "Generates the configuration file"
                 group = "Update4J"
             }
+
+        // TODO
+        project.tasks.getByName("clean").dependsOn(
+            project.tasks.create("clean-gradle-update4j") {
+
+            }
+        )
     }
 }

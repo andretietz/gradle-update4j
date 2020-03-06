@@ -1,10 +1,11 @@
 package com.andretietz.updater
 
-class Application {
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            println("Hello World")
-        }
+import org.update4j.LaunchContext
+import org.update4j.service.Launcher
+
+
+class Application : Launcher {
+    override fun run(context: LaunchContext) {
+        println("Hello World")
     }
 }
