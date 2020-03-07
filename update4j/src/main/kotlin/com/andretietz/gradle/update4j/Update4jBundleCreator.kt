@@ -5,105 +5,72 @@ import org.gradle.api.tasks.TaskAction
 import org.update4j.Configuration
 import org.update4j.FileMetadata
 import java.io.File
-import javax.inject.Inject
 
-open class Update4jBundleCreator @Inject constructor(
-    configuration: Update4jConfigurationExtension
-) : DefaultTask() {
-
-    /**
-     * This is the location where the bundle will be generated to.
-     */
-    private val bundleLocation = configuration.bundleLocation
-    /**
-     * name of the lib folder within the bundle/app/remote directory
-     */
-    private val libfolder: String? = configuration.libraryFolderName
-
-    /**
-     * Name of the configuration file
-     */
-    private val configName = configuration.configurationFileName
-
-    /**
-     * Remote bundle location (directory, in which the update.xml lives in)
-     */
-    private val remoteLocation: String? = configuration.remoteLocation
-
-    /**
-     * Class to start after update
-     */
-    private val launcher: String? = configuration.launcherClass
-
-    private val resources: List<String> = configuration.resources
-
+open class Update4jBundleCreator : DefaultTask() {
 
     @TaskAction
     fun generateXml() {
-        if (remoteLocation == null) throw RuntimeException("Missing update4j.remoteLocation")
-        if (launcher == null) throw RuntimeException("Missing update4j.launcherClass")
+        val configuration = project.update4j()
+        val bundleLocation = if (configuration.bundleLocation != null)
+            File(project.projectDir, configuration.bundleLocation!!).path
+        else
+            File(project.buildDir, "update4j").path
 
-        val configurationBuilder = Configuration.builder()
-            .baseUri(remoteLocation)
-            .basePath("\${app.dir}")
+        logger.error(configuration.toString())
 
-        // TODO: this is super ugly and hacky!!!!!
-        project.allprojects.forEach {
-            val file = File("$bundleLocation/${project.name}-${project.version}.jar")
-            if (!file.exists()) {
-                try {
-                    File(project.buildDir, "libs/${project.name}-${project.version}.jar").copyTo(file)
-                } catch (error: Throwable) {
-                    error.printStackTrace()
-                }
-            }
+        val libraryFolder = if (configuration.libraryFolderName != null)
+            "${configuration.bundleLocation}/${configuration.libraryFolderName}/"
+        else
+            configuration.bundleLocation
 
-            configurationBuilder
-                .file(
-                    FileMetadata
-                        .readFrom("$bundleLocation/${file.name}")
-                        .uri(file.name)
-                        .classpath()
 
+        val filesInThisVersion = mutableListOf<File>()
+
+        val applicationFile = File("$bundleLocation/${project.name}-${project.version}.jar")
+
+        filesInThisVersion.add(
+            if (applicationFile.exists()) applicationFile else
+                File(project.buildDir, "libs/${project.name}-${project.version}.jar").copyTo(
+                    applicationFile
                 )
+        )
+
+        project.configurations.getByName("default").forEach { file ->
+
+            filesInThisVersion.add(file.copyTo(File("$libraryFolder/${file.name}")))
+        }
+
+        configuration.resources.map { File(it) }.forEach { file ->
+            if (file.exists()) {
+                filesInThisVersion.add(
+                    file.copyTo(
+                        File(
+                            bundleLocation,
+                            "${configuration.resourcesFolderName}/${file.name}"
+                        )
+                    )
+                )
+            } else {
+                logger.warn("File {} doesn't exist.", file.absolutePath)
+            }
 
         }
-        project.configurations.getByName("default")
-//        project.allprojects
-//            .flatMap { it.configurations }
-//            .firstOrNull { it.name == "default" }
-            .mapNotNull { dependency ->
-                val targetFile = File("$bundleLocation/$libfolder/${dependency.name}")
 
-                val file = if (!targetFile.exists()) {
-                    dependency.copyTo(File("$bundleLocation/$libfolder/${dependency.name}"))
-                } else {
-                    targetFile
-                }
-                file
-            }.let { list ->
-                if (libfolder != null) {
-                    configurationBuilder.property("app.lib", libfolder)
-                }
-                configurationBuilder.launcher(launcher)
-                list.forEach { file ->
-                    // TODO: add to manifest classpath
-                    try {
-                        configurationBuilder
-                            .file(
-                                FileMetadata
-                                    .readFrom("$bundleLocation/$libfolder/${file.name}")
-                                    .uri("\${app.lib}/${file.name}")
-                                    .classpath()
+        val builder = Configuration.builder()
+            .baseUri(configuration.remoteLocation)
+            .launcher(configuration.launcherClass)
 
-                            )
-                    } catch (error: Throwable) {
-                        error.printStackTrace()
-                    }
-                }
-                File("$bundleLocation/$configName").writeText(
-                    configurationBuilder.build().toString()
-                )
-            }
+        filesInThisVersion.forEach { file ->
+            builder.file(
+                FileMetadata
+                    .readFrom(file.absolutePath)
+                    .uri(file.absolutePath)
+                    .classpath(file.name.endsWith(".jar"))
+            )
+        }
+        File("$bundleLocation/${configuration.configurationFileName}").writeText(
+            builder.build().toString()
+        )
     }
+
 }

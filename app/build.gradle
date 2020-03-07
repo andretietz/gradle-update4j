@@ -36,4 +36,8 @@ compileTestKotlin {
 update4j {
     remoteLocation = "http://ourchoice-shop.flavorgroup.eu/avuploader/update"
     launcherClass = "com.andretietz.updater.Application"
+    bundleLocation = "build/update4j"
+    resources = [
+            "some/file"
+    ]
 }

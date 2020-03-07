@@ -4,15 +4,16 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
 
+const val EXTENSION_NAME = "update4j"
+
 class Update4jPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val configuration = project.extensions.create(
-            "update4j",
-            Update4jConfigurationExtension::class.java,
-            project
+        project.extensions.create(
+            EXTENSION_NAME,
+            Update4jConfiguration::class.java
         )
 
-        project.tasks.create("generateConfiguration", Update4jBundleCreator::class.java, configuration)
+        project.tasks.create("generateConfiguration", Update4jBundleCreator::class.java)
             .dependsOn("build")
             .run {
                 // Set description and group for the task
@@ -21,7 +22,7 @@ class Update4jPlugin : Plugin<Project> {
             }
 
         project.tasks.create("clean-update4j") {
-            File(project.rootDir, "build").delete()
+            File(project.projectDir, "build").delete()
         }.run {
             description = "Deletes the build folder"
             group = "update4J"
@@ -30,3 +31,7 @@ class Update4jPlugin : Plugin<Project> {
 //        project.tasks.getByName("clean").dependsOn(cleaningTask)
     }
 }
+
+internal fun Project.update4j(): Update4jConfiguration =
+    extensions.getByName(EXTENSION_NAME) as? Update4jConfiguration
+        ?: throw IllegalStateException("$EXTENSION_NAME is not of the correct type")
