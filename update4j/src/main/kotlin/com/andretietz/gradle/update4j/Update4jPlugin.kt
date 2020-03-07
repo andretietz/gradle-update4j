@@ -20,7 +20,7 @@ class Update4jPlugin : Plugin<Project> {
                 group = "update4J"
             }
 
-        val cleaningTask = project.tasks.create("clean-update4j") {
+        project.tasks.create("clean-update4j") {
             File(project.rootDir, "build").delete()
         }.run {
             description = "Deletes the build folder"
