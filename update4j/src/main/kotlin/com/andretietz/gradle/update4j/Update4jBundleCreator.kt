@@ -4,50 +4,45 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.update4j.Configuration
 import org.update4j.FileMetadata
-import org.update4j.OS
-import org.update4j.Property
 import java.io.File
+import javax.inject.Inject
 
-open class Update4jXmlGenerator : DefaultTask() {
+open class Update4jBundleCreator @Inject constructor(
+    configuration: Update4jConfigurationExtension
+) : DefaultTask() {
 
     /**
-     * TODO: load from gradle config (optional)
      * This is the location where the bundle will be generated to.
      */
-    private val bundleLocation = "${project.rootDir.absolutePath}/build/bundle"
+    private val bundleLocation = configuration.bundleLocation
     /**
-     * TODO: load from gradle config (optional)
      * name of the lib folder within the bundle/app/remote directory
      */
-    private val libfolder: String = "lib"
+    private val libfolder: String? = configuration.libraryFolderName
 
     /**
-     * TODO: load from gradle config (optional)
      * Name of the configuration file
      */
-    private val configName = "update.xml"
+    private val configName = configuration.configurationFileName
 
     /**
-     * TODO: load from gradle config
      * Remote bundle location (directory, in which the update.xml lives in)
      */
-    private val remoteLocation: String = "http://www.mediaav.de/mau-update"
+    private val remoteLocation: String? = configuration.remoteLocation
 
     /**
-     * TODO: load from gradle config
-     * Name of the application
-     */
-    private val appName: String = "App Name"
-
-    /**
-     * TODO: load from gradle config
      * Class to start after update
      */
-    private val launcher: String = "com.andretietz.updater.Application"
+    private val launcher: String? = configuration.launcherClass
+
+    private val resources: List<String> = configuration.resources
 
 
     @TaskAction
     fun generateXml() {
+        if (remoteLocation == null) throw RuntimeException("Missing update4j.remoteLocation")
+        if (launcher == null) throw RuntimeException("Missing update4j.launcherClass")
+
         val configurationBuilder = Configuration.builder()
             .baseUri(remoteLocation)
             .basePath("\${app.dir}")
@@ -87,25 +82,18 @@ open class Update4jXmlGenerator : DefaultTask() {
                 }
                 file
             }.let { list ->
-                configurationBuilder.properties(
-                    listOf(
-                        Property("app.name", appName),
-                        // Install location
-                        Property("app.dir", "\${user.dir}/\${app.name}"),
-                        Property("app.dir", "\${LOCALAPPDATA}/\${app.name}", OS.WINDOWS),
-                        Property("app.lib", "\${app.dir}/$libfolder")
-                    )
-                )
-                    .launcher(launcher)
+                if (libfolder != null) {
+                    configurationBuilder.property("app.lib", libfolder)
+                }
+                configurationBuilder.launcher(launcher)
                 list.forEach { file ->
                     // TODO: add to manifest classpath
-//                    print("lib/"+file.name)
                     try {
                         configurationBuilder
                             .file(
                                 FileMetadata
                                     .readFrom("$bundleLocation/$libfolder/${file.name}")
-                                    .uri("$libfolder/${file.name}")
+                                    .uri("\${app.lib}/${file.name}")
                                     .classpath()
 
                             )

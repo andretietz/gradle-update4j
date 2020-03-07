@@ -6,13 +6,13 @@ import java.io.File
 
 class Update4jPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.extensions.create(
+        val configuration = project.extensions.create(
             "update4j",
-            Update4jGradleExtension::class.java,
+            Update4jConfigurationExtension::class.java,
             project
         )
 
-        project.tasks.create("generateConfiguration", Update4jXmlGenerator::class.java)
+        project.tasks.create("generateConfiguration", Update4jBundleCreator::class.java, configuration)
             .dependsOn("build")
             .run {
                 // Set description and group for the task

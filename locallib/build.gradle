@@ -1,6 +1,5 @@
 plugins {
     id 'kotlin'
-    id 'com.andretietz.gradle.update4j'
 }
 
 group 'com.andretietz'
@@ -21,8 +20,4 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-update4j {
-//    output = "tgis == akshdk"
 }

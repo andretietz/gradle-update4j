@@ -34,5 +34,6 @@ compileTestKotlin {
 }
 
 update4j {
-//    output = "tgis == akshdk"
+    remoteLocation = "http://ourchoice-shop.flavorgroup.eu/avuploader/update"
+    launcherClass = "com.andretietz.updater.Application"
 }
