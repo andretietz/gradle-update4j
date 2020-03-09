@@ -12,36 +12,34 @@ open class Update4jBundleCreator : DefaultTask() {
     fun generateXml() {
         val configuration = project.update4j()
         val bundleLocation = if (configuration.bundleLocation != null)
-            File(project.projectDir, configuration.bundleLocation!!).path
+            File(project.projectDir, configuration.bundleLocation!!).absolutePath
         else
-            File(project.buildDir, "update4j").path
+            File(project.buildDir, "update4j").absolutePath
 
-        logger.error(configuration.toString())
 
         val libraryFolder = if (configuration.libraryFolderName != null)
-            "${configuration.bundleLocation}/${configuration.libraryFolderName}/"
+            "${bundleLocation}/${configuration.libraryFolderName}/"
         else
-            configuration.bundleLocation
-
+            File(bundleLocation).absolutePath
 
         val filesInThisVersion = mutableListOf<File>()
 
-        val applicationFile = File("$bundleLocation/${project.name}-${project.version}.jar")
-
-        filesInThisVersion.add(
-            if (applicationFile.exists()) applicationFile else
-                File(project.buildDir, "libs/${project.name}-${project.version}.jar").copyTo(
-                    applicationFile
-                )
-        )
-
+        File("$bundleLocation/${project.name}-${project.version}.jar").run {
+            if (!exists()) File(project.buildDir, "libs/${project.name}-${project.version}.jar")
+                .copyTo(this)
+            filesInThisVersion.add(this)
+        }
         project.configurations.getByName("default").forEach { file ->
-
-            filesInThisVersion.add(file.copyTo(File("$libraryFolder/${file.name}")))
+            File("$libraryFolder/${file.name}").run {
+                if (!exists()) file.copyTo(this)
+                filesInThisVersion.add(this)
+            }
         }
 
         configuration.resources.map { File(it) }.forEach { file ->
-            if (file.exists()) {
+            if (!file.exists()) {
+                logger.warn("File \"${file.absolutePath}\" doesn't exist and will be ignored!")
+            } else {
                 filesInThisVersion.add(
                     file.copyTo(
                         File(
@@ -50,10 +48,7 @@ open class Update4jBundleCreator : DefaultTask() {
                         )
                     )
                 )
-            } else {
-                logger.warn("File {} doesn't exist.", file.absolutePath)
             }
-
         }
 
         val builder = Configuration.builder()
@@ -61,6 +56,7 @@ open class Update4jBundleCreator : DefaultTask() {
             .launcher(configuration.launcherClass)
 
         filesInThisVersion.forEach { file ->
+            logger.warn(file.absolutePath)
             builder.file(
                 FileMetadata
                     .readFrom(file.absolutePath)

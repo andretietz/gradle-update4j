@@ -2,7 +2,6 @@ package com.andretietz.gradle.update4j
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
 
 const val EXTENSION_NAME = "update4j"
 
@@ -20,15 +19,6 @@ class Update4jPlugin : Plugin<Project> {
                 description = "Generates the configuration file"
                 group = "update4J"
             }
-
-        project.tasks.create("clean-update4j") {
-            File(project.projectDir, "build").delete()
-        }.run {
-            description = "Deletes the build folder"
-            group = "update4J"
-        }
-
-//        project.tasks.getByName("clean").dependsOn(cleaningTask)
     }
 }
 
