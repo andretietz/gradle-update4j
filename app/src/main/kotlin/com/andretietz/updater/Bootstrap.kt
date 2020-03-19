@@ -9,7 +9,6 @@ class Bootstrap {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            println("Start Application ")
             val configuration = Configuration.read(FileReader(File("update.xml")))
             if (configuration.requiresUpdate()) {
                 configuration.update()

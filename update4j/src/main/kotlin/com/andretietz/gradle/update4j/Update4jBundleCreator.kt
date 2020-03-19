@@ -1,6 +1,8 @@
 package com.andretietz.gradle.update4j
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.artifacts.Dependency.ARCHIVES_CONFIGURATION
+import org.gradle.api.artifacts.Dependency.DEFAULT_CONFIGURATION
 import org.gradle.api.tasks.TaskAction
 import org.update4j.Configuration
 import org.update4j.FileMetadata
@@ -24,19 +26,22 @@ open class Update4jBundleCreator : DefaultTask() {
 
         val filesInThisVersion = mutableListOf<File>()
 
+        project.configurations.getByName(ARCHIVES_CONFIGURATION).forEach {
+            logger.warn(it.toString())
+        }
         File("$bundleLocation/${project.name}-${project.version}.jar").run {
             if (!exists()) File(project.buildDir, "libs/${project.name}-${project.version}.jar")
                 .copyTo(this)
             filesInThisVersion.add(this)
         }
-        project.configurations.getByName("default").forEach { file ->
+        project.configurations.getByName(DEFAULT_CONFIGURATION).forEach { file ->
             File("$libraryFolder/${file.name}").run {
                 if (!exists()) file.copyTo(this)
                 filesInThisVersion.add(this)
             }
         }
 
-        configuration.resources.map { File(it) }.forEach { file ->
+        configuration.resources.map { File(bundleLocation, it) }.forEach { file ->
             if (!file.exists()) {
                 logger.warn("File \"${file.absolutePath}\" doesn't exist and will be ignored!")
             } else {
@@ -60,7 +65,7 @@ open class Update4jBundleCreator : DefaultTask() {
             builder.file(
                 FileMetadata
                     .readFrom(file.absolutePath)
-                    .uri(file.absolutePath)
+                    .uri(file.absolutePath.replace(bundleLocation, "\${user.dir}"))
                     .classpath(file.name.endsWith(".jar"))
             )
         }
