@@ -15,8 +15,8 @@ open class Update4jBundleCreator : DefaultTask() {
 
         val versionSubFolder = if (configuration.remoteVersionSubfolder != null) {
             var folder = requireNotNull(configuration.remoteVersionSubfolder).trim()
-            if (folder.endsWith("/")) folder = folder.substring(0, folder.length - 2)
-            folder.format(project.version.toString())
+            if (folder.endsWith("/")) folder = folder.substring(0, folder.length - 1)
+            folder.format(project.version.toString())+"/"
         } else ""
 
         // get the location in which the whole bundle will be put in
@@ -78,6 +78,7 @@ open class Update4jBundleCreator : DefaultTask() {
 
         val builder = Configuration.builder()
             .baseUri(configuration.remoteLocation)
+            .basePath("\${user.dir}")
             .launcher(configuration.launcherClass)
 
         filesInThisVersion.forEach { file ->
@@ -85,7 +86,8 @@ open class Update4jBundleCreator : DefaultTask() {
             builder.file(
                 FileMetadata
                     .readFrom(file.absolutePath)
-                    .uri("$versionSubFolder${file.name}")
+                    .uri(file.name)
+//                    .path("\${user.dir}")
                     .classpath(file.name.endsWith(".jar"))
             )
         }

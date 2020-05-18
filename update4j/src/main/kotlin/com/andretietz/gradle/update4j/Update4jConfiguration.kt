@@ -6,7 +6,7 @@ open class Update4jConfiguration @JvmOverloads constructor(
     var libraryFolderName: String? = null,
     var configurationFileName: String = "update.xml",
     var useMaven: Boolean = true,
-    var remoteVersionSubfolder: String? = "%s/",
+    var remoteVersionSubfolder: String? = "%s",
     var launcherClass: String? = null,
     var remoteLocation: String? = null,
     var bundleLocation: String? = null
