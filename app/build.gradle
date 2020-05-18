@@ -19,13 +19,6 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j:2.13.0'
 }
 
-jar {
-    manifest {
-        attributes 'Class-Path': configurations.getByName("default").collect { "lib/"+it.name }.join(' ')
-        attributes 'Main-Class': 'com.andretietz.updater.Bootstrap'
-    }
-}
-
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
@@ -34,10 +27,10 @@ compileTestKotlin {
 }
 
 update4j {
-    remoteLocation = "http://ourchoice-shop.flavorgroup.eu/avuploader/update"
+    remoteLocation = "https://andretietz.com/updates/testapp"
     launcherClass = "com.andretietz.updater.Application"
-    bundleLocation = "build/update4j"
-    resources = [
-            "some/file"
-    ]
+//    bundleLocation = "build/update4j"
+//    resources = [
+//            "some/file"
+//    ]
 }

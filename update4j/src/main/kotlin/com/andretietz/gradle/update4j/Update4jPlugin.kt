@@ -12,7 +12,7 @@ class Update4jPlugin : Plugin<Project> {
             Update4jConfiguration::class.java
         )
 
-        project.tasks.create("generateConfiguration", Update4jBundleCreator::class.java)
+        project.tasks.create("generateUpdate4jBundle", Update4jBundleCreator::class.java)
             .dependsOn("build")
             .run {
                 // Set description and group for the task
