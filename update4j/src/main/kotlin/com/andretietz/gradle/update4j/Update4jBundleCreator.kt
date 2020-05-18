@@ -3,9 +3,16 @@ package com.andretietz.gradle.update4j
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Dependency.DEFAULT_CONFIGURATION
 import org.gradle.api.tasks.TaskAction
+import org.gradle.internal.impldep.org.bouncycastle.crypto.util.OpenSSHPrivateKeyUtil
 import org.update4j.Configuration
 import org.update4j.FileMetadata
+import java.io.DataInputStream
 import java.io.File
+import java.security.KeyFactory
+import java.security.PrivateKey
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
+
 
 open class Update4jBundleCreator : DefaultTask() {
 
@@ -16,7 +23,7 @@ open class Update4jBundleCreator : DefaultTask() {
         val versionSubFolder = if (configuration.remoteVersionSubfolder != null) {
             var folder = requireNotNull(configuration.remoteVersionSubfolder).trim()
             if (folder.endsWith("/")) folder = folder.substring(0, folder.length - 1)
-            folder.format(project.version.toString())+"/"
+            folder.format(project.version.toString()) + "/"
         } else ""
 
         // get the location in which the whole bundle will be put in
@@ -81,18 +88,24 @@ open class Update4jBundleCreator : DefaultTask() {
             .basePath("\${user.dir}")
             .launcher(configuration.launcherClass)
 
+
+        // TODO
+//        if (configuration.signingKey != null) {
+//            builder.signer(privateKey(requireNotNull(configuration.signingKey)))
+//        }
+
         filesInThisVersion.forEach { file ->
             logger.warn(file.absolutePath)
             builder.file(
                 FileMetadata
                     .readFrom(file.absolutePath)
                     .uri(file.name)
-//                    .path("\${user.dir}")
                     .classpath(file.name.endsWith(".jar"))
             )
         }
         File("$bundleLocation/${configuration.configurationFileName}")
             .writeText(builder.build().toString())
     }
+
 
 }
