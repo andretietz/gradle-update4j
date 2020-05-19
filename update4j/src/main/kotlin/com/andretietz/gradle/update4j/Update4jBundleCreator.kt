@@ -99,6 +99,7 @@ open class Update4jBundleCreator : DefaultTask() {
             builder.file(
                 FileMetadata
                     .readFrom(file.absolutePath)
+//                    .ignoreBootConflict()
                     .uri(file.name)
                     .classpath(file.name.endsWith(".jar"))
             )
