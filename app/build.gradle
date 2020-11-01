@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath project(":update4j")
+    }
+}
+
 plugins {
     id 'kotlin'
     id 'com.andretietz.gradle.update4j'
