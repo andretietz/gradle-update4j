@@ -2,6 +2,7 @@ package com.andretietz.gradle.update4j
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Dependency.DEFAULT_CONFIGURATION
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.update4j.Configuration
@@ -11,27 +12,25 @@ import java.io.File
 
 open class Update4jBundleCreator : DefaultTask() {
 
+
+  lateinit var configuration: Update4jConfiguration
+
   @OutputDirectory
-  lateinit var outputDirectory: File
+  var outputDirectory: File = File(project.buildDir, OUTPUT_DIRECTORY_DEFAULT)
 
   @TaskAction
   fun generateXml() {
-    val configuration = project.update4j()
-
-    // get the location in which the whole bundle will be located in
-    val bundleLocation = if (configuration.bundleLocation != null) {
-      File(project.projectDir, configuration.bundleLocation!!).absolutePath
-    } else {
-      File(project.buildDir, OUTPUT_DIRECTORY_DEFAULT).absolutePath
+    if (configuration.bundleLocation != null) {
+      outputDirectory = File(project.projectDir, configuration.bundleLocation!!)
     }
-    logger.debug("Bundle Location: $bundleLocation")
-    outputDirectory = File(bundleLocation)
+
+    logger.debug("Bundle Location: $outputDirectory")
     val filesInThisVersion = mutableListOf<File>()
 
     // TODO: more generic way of pulling the artifact
     val artifactName = "${project.name}-${project.version}.jar"
     val projectArtifact = File(project.buildDir, "libs/$artifactName")
-    val artifactTarget = File("$bundleLocation/$artifactName")
+    val artifactTarget = File("${outputDirectory.absolutePath}/$artifactName")
 
     if (!projectArtifact.exists()) throw IllegalStateException("The artifact \"$projectArtifact\" does not exist!")
     logger.info("Copying artifact: $projectArtifact to $artifactTarget")
@@ -42,9 +41,9 @@ open class Update4jBundleCreator : DefaultTask() {
 
     // add all other dependencies to the list
     project.configurations.getByName(DEFAULT_CONFIGURATION).forEach { artifact ->
-      val dependencyArtifactTarget = File("$bundleLocation/${artifact.name}")
+      val dependencyArtifactTarget = File("${outputDirectory.absolutePath}/${artifact.name}")
       logger.info("Copying dependency: $artifact to $dependencyArtifactTarget")
-      artifact.copyTo(dependencyArtifactTarget, false)
+      artifact.copyTo(dependencyArtifactTarget, true)
       filesInThisVersion.add(dependencyArtifactTarget)
     }
 
@@ -55,9 +54,9 @@ open class Update4jBundleCreator : DefaultTask() {
         if (!file.exists()) {
           logger.warn("File \"${file.absolutePath}\" doesn't exist and will be ignored!")
         } else {
-          val resourceTarget = File(bundleLocation, "${configuration.resourcesFolderName}/${file.name}")
+          val resourceTarget = File(outputDirectory.absolutePath, "${configuration.resourcesFolderName}/${file.name}")
           logger.info("Copying dependency: $file to $resourceTarget")
-          file.copyTo(resourceTarget)
+          file.copyTo(resourceTarget, true)
           filesInThisVersion.add(resourceTarget)
         }
       }
@@ -83,12 +82,12 @@ open class Update4jBundleCreator : DefaultTask() {
       )
     }
 
-    File("$bundleLocation/${configuration.configurationFileName}")
+    // write output xml
+    File("${outputDirectory.absolutePath}/${configuration.configurationFileName}")
       .writeText(builder.build().toString())
   }
 
   companion object {
     private const val OUTPUT_DIRECTORY_DEFAULT = "update4j"
   }
-
 }
