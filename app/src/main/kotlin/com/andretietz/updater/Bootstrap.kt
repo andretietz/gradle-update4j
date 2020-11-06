@@ -6,15 +6,15 @@ import java.io.FileReader
 
 
 class Bootstrap {
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val configuration = Configuration.read(FileReader(File("update.xml")))
-            if (configuration.requiresUpdate()) {
-                configuration.update()
-            }
-            configuration.launch()
+  companion object {
+    @JvmStatic
+    fun main(args: Array<String>) {
+      val configuration = Configuration.read(FileReader(File("update.xml")))
+      if (configuration.requiresUpdate()) {
+        configuration.update()
+      }
+      configuration.launch()
 
-        }
     }
+  }
 }
