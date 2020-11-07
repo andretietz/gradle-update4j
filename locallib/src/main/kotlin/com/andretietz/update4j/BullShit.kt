@@ -1,4 +1,4 @@
-package com.andretietz.updater
+package com.andretietz.update4j
 
 object BullShit {
   fun someExternalLib() = "foo"

@@ -30,3 +30,11 @@ update4j {
 
 }
 ```
+
+
+Debug:
+Run the app in terminal:
+```gradlew app:clean app:generateBundle -Dorg.gradle.debug=true```
+```gradlew --stop```
+
+Create a new "Remote" run config using the module `gradle-update4j.update4j.main`

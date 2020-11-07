@@ -15,32 +15,30 @@ plugins {
 group 'com.andretietz'
 version '1.0.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+compileTestKotlin.kotlinOptions.jvmTarget = "1.8"
 
 dependencies {
-  api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-  api "org.jetbrains.kotlin:kotlin-reflect"
-  api "org.slf4j:slf4j-api:$slf4jVersion"
-  api "org.update4j:update4j:1.4.5"
-  implementation "com.jcraft:jsch:0.1.55"
-  implementation project(':locallib')
-  // logging
-  implementation 'org.apache.logging.log4j:log4j:2.13.0'
-}
+  // local dir dependency
+  implementation fileTree(dir: 'libs', include: '*.jar')
 
-compileKotlin {
-  kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-  kotlinOptions.jvmTarget = "1.8"
+  // maven dependency with transitives
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+  // local project dependency
+  implementation project(':locallib')
+
 }
 
 apply plugin: "com.andretietz.gradle.update4j"
 update4j {
   remoteLocation = "https://andretietz.com/updates/testapp"
-  launcherClass = "com.andretietz.updater.Application"
+  launcherClass = "com.andretietz.update4j.Main"
 //    bundleLocation = "build/update4j"
   resources = [
     "somefile.txt"
   ]
+  useMaven = true
 }
