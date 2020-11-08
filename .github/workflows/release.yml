@@ -37,6 +37,10 @@ jobs:
             echo "Versions in gradle.properties and version in github tag MUST match!"
             exit 1
           fi
+
+          sed -i 's/^[^\/\/]*app/\/\/&/' settings.gradle
+          sed -i 's/^[^\/\/]*locallib/\/\/&/' settings.gradle
+
           echo "Versions set correct!"
           echo "Building version: $version"
           ./gradlew uploadArchives --stacktrace --no-daemon --no-parallel --warning-mode all

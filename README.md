@@ -2,6 +2,8 @@
 This is a gradle plugin to generate a bundle directory containing all required
 dependencies and an `update.xml` file for the [update4j library](https://github.com/update4j/update4j).
 All maven dependencies will be added as such in order to minimize selfhosted files.
+
+FYI: There's no version released yet! Use `0.1.0-SNAPSHOT` to try.
 # Usage
 ### 1. Using Release Versions:
 ```groovy

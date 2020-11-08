@@ -76,18 +76,23 @@ open class Update4jBundleCreator : DefaultTask() {
 
     dependencies.forEach { dependency ->
       if (dependency is DefaultResolvedArtifact) {
+        println("Handling: ${dependency.moduleVersion.id.name}")
         var handled = false
         for ((_, repo) in repos) {
           // This is a bit... optimistic...
           val group = dependency.moduleVersion.id.group
           val name = dependency.moduleVersion.id.name
           val version = dependency.moduleVersion.id.version
+          val classifier =
+            if (dependency.artifactName.classifier != null) "-${dependency.artifactName.classifier}" else ""
+
           val url = URI(
             String.format(
-              "%s%s/%s/%s/%s-%s.%s",
+              "%s%s/%s/%s/%s-%s%s.%s",
               repo.toString(),
               group.replace('.', '/'),
               name, version, name, version,
+              classifier,
               dependency.artifactName.extension ?: dependency.artifactName.type
             )
           )
@@ -170,8 +175,13 @@ open class Update4jBundleCreator : DefaultTask() {
       .launcher(launcherClass)
 
 
-    fileReferences.forEach { builder.file(it) }
+    fileReferences.forEach {
+      builder.file(it)
+    }
 
+    for (file in builder.files) {
+      println(file.uri)
+    }
     // write output xml
     File("${outputDirectory.absolutePath}/$update4jConfigurationFile")
       .writeText(builder.build().toString())

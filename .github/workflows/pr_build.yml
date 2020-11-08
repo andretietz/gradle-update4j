@@ -26,5 +26,9 @@ jobs:
             echo "Version string MUST contain \"-SNAPSHOT\"!"
             exit 1;
           fi
+
+          sed -i 's/^[^\/\/]*app/\/\/&/' settings.gradle
+          sed -i 's/^[^\/\/]*locallib/\/\/&/' settings.gradle
+
           echo "Next Version: $version"
           ./gradlew build --stacktrace --warning-mode all
