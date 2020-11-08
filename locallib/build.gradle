@@ -2,9 +2,6 @@ plugins {
   id 'kotlin'
 }
 
-group 'com.andretietz'
-version '1.0.0-SNAPSHOT'
-
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 compileKotlin.kotlinOptions.jvmTarget = "1.8"

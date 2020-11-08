@@ -24,6 +24,7 @@ jobs:
 
       - name: Building Release
         run: |
+          echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
           version=$(grep "VERSION_NAME" gradle.properties | cut -d'=' -f2 )
           if [[ $version != *"-SNAPSHOT"* ]]; then
             echo "Version string MUST contain \"-SNAPSHOT\"!"
@@ -31,7 +32,13 @@ jobs:
           fi
           version=$(grep "VERSION_NAME" "./gradle.properties"|cut -d'=' -f2| sed 's/-SNAPSHOT//g')
           sed -i'' "s/VERSION_NAME=.*-SNAPSHOT/VERSION_NAME=$version/g" gradle.properties
-          echo "Building Release Version: $version"
+          echo "$version == $RELEASE_VERSION?"
+          if [[ $version != $RELEASE_VERSION ]]; then
+            echo "Versions in gradle.properties and version in github tag MUST match!"
+            exit 1
+          fi
+          echo "Versions set correct!"
+          echo "Building version: $version"
           ./gradlew uploadArchives --stacktrace --no-daemon --no-parallel --warning-mode all
         env:
           ORG_GRADLE_PROJECT_SONATYPE_NEXUS_USERNAME: ${{ secrets.SONATYPE_NEXUS_USERNAME }}

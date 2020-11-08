@@ -1,9 +1,5 @@
 buildscript {
-  repositories {
-    mavenCentral()
-  }
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     classpath project(":update4j")
   }
 }
@@ -11,9 +7,6 @@ buildscript {
 plugins {
   id 'kotlin'
 }
-
-group 'com.andretietz'
-version '1.0.0-SNAPSHOT'
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
@@ -36,10 +29,8 @@ apply plugin: "com.andretietz.gradle.update4j"
 update4j {
   remoteLocation = "https://andretietz.com/updates/testapp"
   launcherClass = "com.andretietz.update4j.Main"
-//    bundleLocation = "build/update4j"
   resources = [
     "somefile.txt",
     "lib"
   ]
-  useMaven = true
 }
