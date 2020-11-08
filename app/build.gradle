@@ -38,7 +38,8 @@ update4j {
   launcherClass = "com.andretietz.update4j.Main"
 //    bundleLocation = "build/update4j"
   resources = [
-    "somefile.txt"
+    "somefile.txt",
+    "lib"
   ]
   useMaven = true
 }

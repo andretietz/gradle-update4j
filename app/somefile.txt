@@ -1,1 +1,1 @@
-this is testfoo
+This is a testfile, to see if resources get handled correctly.
