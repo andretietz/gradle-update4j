@@ -76,7 +76,6 @@ open class Update4jBundleCreator : DefaultTask() {
 
     dependencies.forEach { dependency ->
       if (dependency is DefaultResolvedArtifact) {
-        println("Handling: ${dependency.moduleVersion.id.name}")
         var handled = false
         for ((_, repo) in repos) {
           // This is a bit... optimistic...

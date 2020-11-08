@@ -42,7 +42,7 @@ update4j {
   launcherClass = "com.andretietz.update4j.Main"
   resources = [
     "somefile.txt",
-    "lib"
+    "lib" // not supported atm
   ]
 }
 ```
@@ -52,6 +52,19 @@ update4j {
 gradlew generateBundle
 ```
 
+# What can it do already?
+* Generating an `build/update4j/update.xml`
+  * adding: `launcherClass`
+  * adding maven dependencies (and it's transitives)
+    * xml will contain full maven repository links if found
+    * if not found it'll copy it to the target dir: `build/update4j`
+  * adding local project dependencies by copying the artifacts into `build/update4j`
+  * additional resource files will be copied into `build/update4j/res` and added to xml
+## Not working atm:
+  * local file dependencies (such as `implementation fileTree(dir: 'libs', include: '*.jar')` or `implementation files("somelib/samplelib-1.0.0.jar")`)
+  * file signing
+  * resource files as directory
+  
 # Development
 In order to start developing on this plugin:
 
