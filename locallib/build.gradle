@@ -1,23 +1,18 @@
 plugins {
-    id 'kotlin'
+  id 'kotlin'
 }
 
-group 'com.andretietz'
-version '1.0.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+compileTestKotlin.kotlinOptions.jvmTarget = "1.8"
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-//    api "org.slf4j:slf4j-api:$slf4jVersion"
-    implementation "com.jcraft:jsch:0.1.55"
-    // logging
-    implementation 'org.apache.logging.log4j:log4j:2.13.0'
-}
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+  implementation files("somelib/samplelib-1.0.0.jar")
+
+  api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+  api "com.andretietz.houston:houston:1.0.1"
+  // logging
+  implementation 'org.apache.logging.log4j:log4j:2.13.0'
 }
