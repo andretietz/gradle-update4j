@@ -11,7 +11,7 @@ sealed class ResolvedDependency(
 data class ExternalResolvedDependency(
   override val file: File,
   val url: URL,
-  val os: OS,
+  val os: OS?,
   val needsCleanup: Boolean
 ) : ResolvedDependency(file)
 

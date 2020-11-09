@@ -91,10 +91,14 @@ open class Update4jBundleCreator : DefaultTask() {
       }
     resolvedDependencies.map { resolvedDependency ->
       when (resolvedDependency) {
-        is LocalResolvedDependency -> FileMetadata
-          .readFrom(resolvedDependency.file.absolutePath)
-          .uri(resolvedDependency.file.name)
-          .classpath(resolvedDependency.file.name.endsWith(".jar"))
+        is LocalResolvedDependency -> {
+          resolvedDependency.file
+            .copyTo(File(outputDirectory, resolvedDependency.file.name), true)
+          FileMetadata
+            .readFrom(resolvedDependency.file.absolutePath)
+            .uri(resolvedDependency.file.name)
+            .classpath(resolvedDependency.file.name.endsWith(".jar"))
+        }
 
         is ExternalResolvedDependency -> {
           FileMetadata
@@ -142,10 +146,10 @@ open class Update4jBundleCreator : DefaultTask() {
       .writeText(builder.build().toString())
 
     // remove downloaded OS files
-    resolvedDependencies
-      .filterIsInstance<ExternalResolvedDependency>()
-      .filter { it.needsCleanup }
-      .forEach { it.file.delete() }
+//    resolvedDependencies
+//      .filterIsInstance<ExternalResolvedDependency>()
+//      .filter { it.needsCleanup }
+//      .forEach { it.file.delete() }
   }
 
   private fun createExternalDependency(
@@ -167,7 +171,7 @@ open class Update4jBundleCreator : DefaultTask() {
       url = remoteUrl,
       os = if (OS.values().map { it.shortName }.contains(dependency.classifier)) {
         OS.fromShortName(dependency.classifier)
-      } else OS.OTHER,
+      } else null,
       needsCleanup
     )
   }
