@@ -6,6 +6,7 @@ buildscript {
 
 plugins {
   id 'kotlin'
+  id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 sourceCompatibility = 9
@@ -22,6 +23,11 @@ dependencies {
   // local project dependency
   implementation project(':locallib')
 
+}
+
+javafx {
+  version = "14"
+  modules = ['javafx.controls']
 }
 
 apply plugin: "com.andretietz.gradle.update4j"
