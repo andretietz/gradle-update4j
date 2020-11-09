@@ -60,10 +60,12 @@ gradlew generateBundle
     * if not found it'll copy it to the target dir: `build/update4j`
   * adding local project dependencies by copying the artifacts into `build/update4j`
   * additional resource files will be copied into `build/update4j/res` and added to xml
+  * os attribute support, if you add the dependency
 ## Not working atm:
   * local file dependencies (such as `implementation fileTree(dir: 'libs', include: '*.jar')` or `implementation files("somelib/samplelib-1.0.0.jar")`)
   * file signing
   * resource files as directory
+  * adding anything to the module path (within the config xml)
   
 # Development
 In order to start developing on this plugin:
