@@ -49,7 +49,7 @@ open class Update4jBundleCreator : DefaultTask() {
     logger.debug("Bundle Location: $outputDirectory")
 
     // TODO: Check for valid inputs!
-    
+
     val builder = Configuration.builder()
       .baseUri(remoteLocation)
       .basePath("\${user.dir}")
