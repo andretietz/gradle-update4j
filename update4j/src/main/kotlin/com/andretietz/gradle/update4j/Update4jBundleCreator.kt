@@ -6,14 +6,17 @@ import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.internal.artifacts.DefaultResolvedArtifact
+import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.update4j.Configuration
 import org.update4j.FileMetadata
+import org.update4j.OS
 import java.io.File
-import java.io.InputStream
 import java.net.URI
+import java.net.URL
+import java.nio.file.Path
 
 
 open class Update4jBundleCreator : DefaultTask() {
@@ -48,95 +51,75 @@ open class Update4jBundleCreator : DefaultTask() {
     logger.debug("Bundle Location: $outputDirectory")
 
     // TODO: Check for valid inputs!
-    val fileReferences = mutableListOf<FileMetadata.Reference>()
 
-    @Suppress("UnstableApiUsage")
+    val builder = Configuration.builder()
+      .baseUri(remoteLocation)
+      .basePath("\${user.dir}")
+      .launcher(launcherClass)
+
     val repos = project.repositories
       .filterIsInstance<MavenArtifactRepository>()
       // make sure to exclude maven local, since it cannot be reached
       .filter { it.name != "MavelLocal" && it.url.scheme != "file" }
-      .map { it.name to it.url }
-      .toMap()
+      .map {
+        if(!it.url.path.endsWith('/')) {
+          URL(it.url.path.plus('/'))
+        }
+        it.url
+      }
+      .toSet()
 
     // copy all artifacts from this project into the output dir
     project.configurations.getByName(DEFAULT_CONFIGURATION).allArtifacts
       .map { it.file }.forEach { artifact ->
         val targetFile = File("${outputDirectory.absolutePath}/${artifact.name}")
         artifact.copyTo(targetFile, true)
-        fileReferences.add(
+        builder.file(
           FileMetadata.readFrom(artifact.absolutePath)
             .uri(artifact.name)
             .classpath(artifact.name.endsWith(".jar"))
         )
       }
 
-    val dependencies = project.configurations.getByName(DEFAULT_CONFIGURATION)
-      .resolvedConfiguration.firstLevelModuleDependencies
-      .flatMap { handleDependency(it) }.toSet()
-
-    dependencies.forEach { dependency ->
-      if (dependency is DefaultResolvedArtifact) {
-        var handled = false
-        for ((_, repo) in repos) {
-          // This is a bit... optimistic...
-          val group = dependency.moduleVersion.id.group
-          val name = dependency.moduleVersion.id.name
-          val version = dependency.moduleVersion.id.version
-          val classifier =
-            if (dependency.artifactName.classifier != null) "-${dependency.artifactName.classifier}" else ""
-
-          val url = URI(
-            String.format(
-              "%s%s/%s/%s/%s-%s%s.%s",
-              repo.toString(),
-              group.replace('.', '/'),
-              name, version, name, version,
-              classifier,
-              dependency.artifactName.extension ?: dependency.artifactName.type
-            )
-          )
-
-          var stream: InputStream? = null
-          try {
-            stream = url.toURL().openStream()
-            if (stream != null) {
-              logger.debug("Found External dependency: $url")
-              fileReferences.add(
-                FileMetadata
-                  .readFrom(dependency.file.absolutePath)
-                  .uri(url)
-                  .classpath(dependency.file.name.endsWith(".jar"))
-              )
-              handled = true
-              break
-            }
-          } catch (error: Throwable) {
-            logger.trace("Couldn't find dependency here: $url")
-          } finally {
-            stream?.close()
-          }
+    //project.configurations.getByName(DEFAULT_CONFIGURATION).resolvedConfiguration.resolvedArtifacts
+    val resolvedDependencies = project.configurations.getByName(DEFAULT_CONFIGURATION)
+      .resolvedConfiguration.resolvedArtifacts
+    //      .flatMap { collectTransitiveDependencies(it) }
+      .toSet()
+      .filterIsInstance<DefaultResolvedArtifact>()
+      .flatMap(this::createPossibleDependencies)
+      .map { dependency ->
+        // get download url if available
+        val remoteUrl = getDownloadUrl(repos, dependency)
+        if (remoteUrl != null) {
+          return@map createExternalDependency(dependency, remoteUrl)
+        } else {
+          return@map LocalResolvedDependency(dependency.localFile!!)
         }
-
-        if (!handled) {
-          val dependencyArtifactTarget = File("${outputDirectory.absolutePath}/${dependency.file.name}")
-          logger.info("Copying dependency: ${dependency.file} to $dependencyArtifactTarget")
-          dependency.file.copyTo(dependencyArtifactTarget, true)
-          fileReferences.add(
-            FileMetadata
-              .readFrom(dependencyArtifactTarget.absolutePath)
-              .uri(dependencyArtifactTarget.name)
-              .classpath(dependency.file.name.endsWith(".jar"))
-          )
-        }
-
-      } else {
-        logger.warn("UNKNOWN dependency type: ${dependency.javaClass.canonicalName}")
       }
-    }
+    resolvedDependencies.map { resolvedDependency ->
+      when (resolvedDependency) {
+        is LocalResolvedDependency -> {
+          resolvedDependency.file
+            .copyTo(File(outputDirectory, resolvedDependency.file.name), true)
+          FileMetadata
+            .readFrom(resolvedDependency.file.absolutePath)
+            .uri(resolvedDependency.file.name)
+            .classpath(resolvedDependency.file.name.endsWith(".jar"))
+        }
+
+        is ExternalResolvedDependency -> {
+          FileMetadata
+            .readFrom(resolvedDependency.file.absolutePath)
+            .uri(resolvedDependency.url.toURI())
+            .classpath(resolvedDependency.file.name.endsWith(".jar"))
+            .os(resolvedDependency.os)
+        }
+      }
+    }.forEach { builder.file(it) }
 
     // add resources
-    resources
-      .map { File(project.projectDir, it) }
+    resources.map { File(project.projectDir, it) }
       .forEach { file ->
         if (!file.exists()) {
           logger.warn("File \"${file.absolutePath}\" doesn't exist and will be ignored!")
@@ -145,7 +128,7 @@ open class Update4jBundleCreator : DefaultTask() {
           logger.info("Copying dependency: $file to $resourceTarget")
           if (resourceTarget.isFile) {
             file.copyTo(resourceTarget, true)
-            fileReferences.add(
+            builder.file(
               FileMetadata
                 .readFrom(resourceTarget.absolutePath)
                 .uri(resourceTarget.name)
@@ -166,34 +149,102 @@ open class Update4jBundleCreator : DefaultTask() {
         }
       }
 
-
-    // generate xml file
-    val builder = Configuration.builder()
-      .baseUri(remoteLocation)
-      .basePath("\${user.dir}")
-      .launcher(launcherClass)
-
-
-    fileReferences.forEach {
-      builder.file(it)
-    }
-
-    for (file in builder.files) {
-      println(file.uri)
-    }
     // write output xml
     File("${outputDirectory.absolutePath}/$update4jConfigurationFile")
       .writeText(builder.build().toString())
+
+    // remove downloaded OS files
+    resolvedDependencies
+      .filterIsInstance<ExternalResolvedDependency>()
+      .filter { it.needsCleanup }
+      .forEach { it.file.delete() }
   }
 
-  fun handleDependency(
+  private fun createExternalDependency(
+    dependency: UnresolvedDependency,
+    remoteUrl: URL
+  ): ExternalResolvedDependency {
+    var needsCleanup = false
+    val file = if (dependency.localFile == null) {
+      // if file is not available (happens for OS classifiers on other OSs)
+      val file = File(outputDirectory, remoteUrl.path.substring(remoteUrl.path.lastIndexOf('/'), remoteUrl.path.length))
+      remoteUrl.openStream().use { input -> file.outputStream().use { fout -> input.copyTo(fout) } }
+      needsCleanup = true
+      file
+    } else {
+      dependency.localFile
+    }
+    return ExternalResolvedDependency(
+      file = file,
+      url = remoteUrl,
+      os = if (OS.values().map { it.shortName }.contains(dependency.classifier)) {
+        OS.fromShortName(dependency.classifier)
+      } else null,
+      needsCleanup
+    )
+  }
+
+  private fun createPossibleDependencies(dependency: DefaultResolvedArtifact): Collection<UnresolvedDependency> {
+    return if (OS.values()
+        .map { it.shortName }
+        .any { it == dependency.artifactName.classifier }
+    ) {
+      OS.values().filter { it != OS.OTHER }.map {
+        UnresolvedDependency(
+          dependency.moduleVersion.id.group,
+          dependency.moduleVersion.id.name,
+          dependency.moduleVersion.id.version,
+          dependency.artifactName.extension ?: dependency.artifactName.type,
+          null,
+          true,
+          it.shortName
+        )
+      }
+    } else {
+      setOf(
+        UnresolvedDependency(
+          dependency.moduleVersion.id.group,
+          dependency.moduleVersion.id.name,
+          dependency.moduleVersion.id.version,
+          dependency.artifactName.extension ?: dependency.artifactName.type,
+          dependency.file,
+          false,
+          dependency.artifactName.classifier
+        )
+      )
+    }
+  }
+
+  private fun getDownloadUrl(
+    repos: Set<URI>,
+    dependency: UnresolvedDependency
+  ): URL? {
+    return repos.map { repo ->
+      URL(
+        String.format(
+          "%s%s/%s/%s/%s-%s%s.%s", repo.toString(),
+          dependency.group.replace('.', '/'),
+          dependency.name, dependency.version, dependency.name, dependency.version,
+          if (dependency.classifier != null) "-${dependency.classifier}" else "",
+          dependency.extension
+        )
+      )
+    }.firstOrNull { url ->
+      try {
+        url.openStream().close()
+        true
+      } catch (error: Throwable) {
+        false
+      }
+    }
+  }
+
+  private fun collectTransitiveDependencies(
     dependency: ResolvedDependency,
     artifacts: MutableSet<ResolvedArtifact> = mutableSetOf()
   ): Set<ResolvedArtifact> {
-    dependency.moduleArtifacts.forEach {
-      artifacts.add(it)
-    }
-    dependency.children.forEach { handleDependency(it, artifacts) }
+    dependency.moduleArtifacts.forEach { artifacts.add(it) }
+    dependency.children.forEach { collectTransitiveDependencies(it, artifacts) }
     return artifacts
   }
 
