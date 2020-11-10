@@ -63,7 +63,7 @@ open class Update4jBundleCreator : DefaultTask() {
       .filter { it.name != "MavelLocal" && it.url.scheme != "file" }
       .map {
         if(!it.url.path.endsWith('/')) {
-          URL(it.url.path.plus('/'))
+          URL(it.url.toString().plus('/'))
         }
         it.url
       }
