@@ -6,6 +6,7 @@ import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.internal.artifacts.DefaultResolvedArtifact
+import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -15,6 +16,7 @@ import org.update4j.OS
 import java.io.File
 import java.net.URI
 import java.net.URL
+import java.nio.file.Path
 
 
 open class Update4jBundleCreator : DefaultTask() {
@@ -59,7 +61,12 @@ open class Update4jBundleCreator : DefaultTask() {
       .filterIsInstance<MavenArtifactRepository>()
       // make sure to exclude maven local, since it cannot be reached
       .filter { it.name != "MavelLocal" && it.url.scheme != "file" }
-      .map { it.url }
+      .map {
+        if(!it.url.path.endsWith('/')) {
+          URL(it.url.path.plus('/'))
+        }
+        it.url
+      }
       .toSet()
 
     // copy all artifacts from this project into the output dir
@@ -74,9 +81,10 @@ open class Update4jBundleCreator : DefaultTask() {
         )
       }
 
+    //project.configurations.getByName(DEFAULT_CONFIGURATION).resolvedConfiguration.resolvedArtifacts
     val resolvedDependencies = project.configurations.getByName(DEFAULT_CONFIGURATION)
-      .resolvedConfiguration.firstLevelModuleDependencies
-      .flatMap { collectTransitiveDependencies(it) }
+      .resolvedConfiguration.resolvedArtifacts
+    //      .flatMap { collectTransitiveDependencies(it) }
       .toSet()
       .filterIsInstance<DefaultResolvedArtifact>()
       .flatMap(this::createPossibleDependencies)
