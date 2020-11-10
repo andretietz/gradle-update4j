@@ -6,7 +6,6 @@ import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.internal.artifacts.DefaultResolvedArtifact
-import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -16,7 +15,6 @@ import org.update4j.OS
 import java.io.File
 import java.net.URI
 import java.net.URL
-import java.nio.file.Path
 
 
 open class Update4jBundleCreator : DefaultTask() {
@@ -62,7 +60,7 @@ open class Update4jBundleCreator : DefaultTask() {
       // make sure to exclude maven local, since it cannot be reached
       .filter { it.name != "MavelLocal" && it.url.scheme != "file" }
       .map {
-        if(!it.url.path.endsWith('/')) {
+        if (!it.url.path.endsWith('/')) {
           URL(it.url.toString().plus('/'))
         }
         it.url
@@ -84,13 +82,12 @@ open class Update4jBundleCreator : DefaultTask() {
     //project.configurations.getByName(DEFAULT_CONFIGURATION).resolvedConfiguration.resolvedArtifacts
     val resolvedDependencies = project.configurations.getByName(DEFAULT_CONFIGURATION)
       .resolvedConfiguration.resolvedArtifacts
-    //      .flatMap { collectTransitiveDependencies(it) }
       .toSet()
       .filterIsInstance<DefaultResolvedArtifact>()
       .flatMap(this::createPossibleDependencies)
       .map { dependency ->
         // get download url if available
-        val remoteUrl = getDownloadUrl(repos, dependency)
+        val remoteUrl = if (useMaven) getDownloadUrl(repos, dependency) else null
         if (remoteUrl != null) {
           return@map createExternalDependency(dependency, remoteUrl)
         } else {
@@ -126,14 +123,14 @@ open class Update4jBundleCreator : DefaultTask() {
         } else {
           val resourceTarget = File(outputDirectory.absolutePath, "$resourcesDirectoryName/${file.name}")
           logger.info("Copying dependency: $file to $resourceTarget")
-          if (resourceTarget.isFile) {
+          if (file.isFile) {
             file.copyTo(resourceTarget, true)
             builder.file(
               FileMetadata
                 .readFrom(resourceTarget.absolutePath)
                 .uri(resourceTarget.name)
             )
-          } else if (resourceTarget.isDirectory) {
+          } else if (file.isDirectory) {
             // TODO
             logger.warn("directory resources not supported atm! (tried copying: ${resourceTarget.absolutePath})")
 //            file.walkTopDown().forEach { dirFile ->
@@ -187,7 +184,7 @@ open class Update4jBundleCreator : DefaultTask() {
   private fun createPossibleDependencies(dependency: DefaultResolvedArtifact): Collection<UnresolvedDependency> {
     return if (OS.values()
         .map { it.shortName }
-        .any { it == dependency.artifactName.classifier }
+        .any { it == dependency.artifactName.classifier } && useMaven
     ) {
       OS.values().filter { it != OS.OTHER }.map {
         UnresolvedDependency(

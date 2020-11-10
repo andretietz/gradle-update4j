@@ -37,9 +37,21 @@ buildscript {
 ```groovy
 apply plugin: "com.andretietz.gradle.update4j"
 update4j {
-  // directory in which to find the files
+  // name of the generated config xml. optional, default: update.xml
+  configurationFileName = "update.xml"
+  // directory in which to find the files. mandatory!
   remoteLocation = "https://andretietz.com/updates/testapp" 
+  // launcher class. mandatory!
   launcherClass = "com.andretietz.update4j.Main"
+  // use maven links in the update.xml. optional, default: true
+  // if false, it copies all dependencies into the output folder
+  useMaven = true 
+  // directory name in which the bundle should be generated. optional, default: update4j
+  bundleLocation = "update4j"
+  // name of the directory within the bundle location, in which the resources should end up in. optional, default: .
+  resourcesDirectoryName = "."
+
+  // files you want to end up in the bundle directory. optional
   resources = [
     "somefile.txt",
     "lib" // not supported atm

@@ -1,9 +1,7 @@
 package com.andretietz.gradle.update4j
 
-import java.io.Serializable
-
 open class Update4jConfiguration @JvmOverloads constructor(
-  var resourcesFolderName: String = "res",
+  var resourcesFolderName: String = ".",
   var resources: List<String> = listOf(),
   var libraryFolderName: String? = null,
   var configurationFileName: String = "update.xml",
