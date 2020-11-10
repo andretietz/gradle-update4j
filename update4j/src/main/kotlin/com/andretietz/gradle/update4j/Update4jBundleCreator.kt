@@ -146,10 +146,10 @@ open class Update4jBundleCreator : DefaultTask() {
       .writeText(builder.build().toString())
 
     // remove downloaded OS files
-//    resolvedDependencies
-//      .filterIsInstance<ExternalResolvedDependency>()
-//      .filter { it.needsCleanup }
-//      .forEach { it.file.delete() }
+    resolvedDependencies
+      .filterIsInstance<ExternalResolvedDependency>()
+      .filter { it.needsCleanup }
+      .forEach { it.file.delete() }
   }
 
   private fun createExternalDependency(
@@ -187,7 +187,7 @@ open class Update4jBundleCreator : DefaultTask() {
           dependency.moduleVersion.id.name,
           dependency.moduleVersion.id.version,
           dependency.artifactName.extension ?: dependency.artifactName.type,
-          dependency.file,
+          null,
           true,
           it.shortName
         )
